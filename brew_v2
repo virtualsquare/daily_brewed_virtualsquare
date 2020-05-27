@@ -36,6 +36,10 @@ PATHRAW=${IMAGETAG}${LATESTTAG}.img
 PATHV2=${V2TAG}${LATESTTAG}.qcow2
 # hostname 
 HOSTNAME=V2-${LATESTTAG}
+# URL install_packets_for_v2
+V2PACK="https://raw.githubusercontent.com/virtualsquare/virtualsquare.github.io/master/archive/install_scripts/install_packets_for_v2.sh"
+# URL install_v2_projects
+V2PROJ="https://raw.githubusercontent.com/virtualsquare/virtualsquare.github.io/master/archive/install_scripts/install_v2_projects.sh"
 
 # do not download the image twice if it is already here
 if [ ! -f $PATHIMG ]
@@ -49,12 +53,10 @@ qemu-img convert -f qcow2 -O raw $PATHIMG $PATHRAW
 truncate --size=10G $PATHRAW
 # trick to update the GPT header
 printf "fix\n" | /sbin/parted ---pretend-input-tty $PATHRAW print
-# remove the root partition
-/sbin/parted -s $PATHRAW rm 1
-# compute the free space
-PARTDATA=`/sbin/parted -s $PATHRAW unit MB print free | grep "Free Space" | awk '{print $1,$2}' | tail -1`
-# create a new partition resizing the file system.
-/sbin/parted -s $PATHRAW mkpart / ext4 $PARTDATA
+# resize the root partition
+/sbin/parted -s $PATHRAW resizepart 1 100%
+# print the new partition table
+/sbin/parted -s $PATHRAW print
 # convert the raw image to the V2 qcow2
 qemu-img convert -f raw -O qcow2 $PATHRAW $PATHV2
 
@@ -73,14 +75,16 @@ virt-sysprep -a $PATHV2 \
 		--root-password password:virtualsquare \
 		--network \
 		--update --install xterm,xauth \
-		--run-command 'cd /root; wget https://raw.githubusercontent.com/virtualsquare/virtualsquare.github.io/master/archive/install_scripts/install_packets_for_v2.sh' \
-		--run-command 'cd /root; wget https://raw.githubusercontent.com/virtualsquare/virtualsquare.github.io/master/archive/install_scripts/install_v2_projects.sh' \
+		--run-command 'echo "#!/bin/bash" > /root/get_v2all' \
+		--run-command "echo wget $V2PACK >> /root/get_v2all" \
+		--run-command "echo wget $V2PROJ >> /root/get_v2all" \
+		--run-command 'echo "chmod +x /root/install_packets_for_v2.sh /root/install_v2_projects.sh" >> /root/get_v2all' \
+		--run-command 'echo "/root/install_packets_for_v2.sh && /root/install_v2_projects.sh" >> /root/get_v2all' \
+		--run-command 'chmod +x /root/get_v2all' \
 		--run-command 'cd /root; wget https://raw.githubusercontent.com/virtualsquare/virtualsquare.github.io/master/archive/install_scripts/append_to.bashrc' \
-		--run-command 'cd /root; chmod +x install_packets_for_v2.sh install_v2_projects.sh' \
 		--run-command 'ssh-keygen -A' \
 		--run-command "sed -i 's/^.*PasswordAuthentication.*$/#PasswordAuthentication yes/' /etc/ssh/sshd_config" \
 		--run-command "sed -i 's/^.*PermitRootLogin.*$/PermitRootLogin Yes/' /etc/ssh/sshd_config" \
 		--run-command 'adduser --disabled-password --gecos "" virtualsquare' \
 		--run-command 'echo "virtualsquare:virtualsquare" | chpasswd' \
 		--run-command 'cat /root/append_to.bashrc >> /home/virtualsquare/.bashrc'
-

@@ -40,7 +40,7 @@ $ kvm -smp 8 -drive file=debian-sid-v2-amd64-daily-20200526-275.qcow2 -m 1G \
 When the VM has booted log in as root (password `virtualsquare`) and run the following
 command:
 ```bash
-# ./install_packets_for_v2.sh && ./install_v2_projects.sh
+# ./get_v2all
 ```
 
 This command installs all the packets needed by the virtualsquare projects and then downloads, builds and
