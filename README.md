@@ -1,14 +1,14 @@
-# Daily Brewed Virtualsquare
+# Freshly Brewed Virtualsquare
 Dynamically create a disk image to test the latest developments of Debian sid and virtualsquare
 
-The script `getimage` downloads the latest version of SID/unstable from the 
+The script `brew_v2` downloads the latest version of SID/unstable from the 
 [Debian Official Cloud Images](http://cdimage.debian.org/cdimage/cloud/)
 and customizes it to be used as a Tutorial environment for the 
 [Virtualsquare projects](http://wiki.virtualsquare.org/#!index.md).
 
 ## Requirements
 
-`getimage` should need the following packages:
+`brew_v2` should need the following packages:
 
 ```bash
 $ apt-get install qemu-kvm qemu-utils parted libguestfs-tools
@@ -16,10 +16,10 @@ $ apt-get install qemu-kvm qemu-utils parted libguestfs-tools
 
 ## Usage
 
-Simply run `getimage`:
+Simply run `brew_v2`:
 
 ```bash
-$ ./getimage
+$ ./brew_v2
 ```
 
 At the end the script creates a disk image file like:
@@ -58,7 +58,7 @@ $ ssh -p2222 -X virtualsquare@localhost
 
 This example provides also a X-window forwarding service.
 
-In case you update the disk image (e.g. using `getimage` again) ssh can complain that the host key has changed. In case delete the previous key:
+In case you update the disk image (e.g. using `brew_v2` again) ssh can complain that the host key has changed. In case delete the previous key:
 ```
 $  ssh-keygen -R "[localhost]:2222"
 ```
