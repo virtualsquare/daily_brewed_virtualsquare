@@ -48,12 +48,12 @@ installs all the altest versions of the projects directly from the development r
 
 ## Log in and try your experiments
 
-Virtualsquare tools do not generally require root access. So an unprivileged user named `virtualsquare` (password `virtualsquare`) has been added for the tests.
+Virtualsquare tools do not generally require root access. So an unprivileged user named `user` (password `virtualsquare`) has been added for the tests.
 
 It is possible to log-in on the console or by ssh (a tunnel is provided as localhost at port 2222):
 
 ```bash
-$ ssh -p2222 -X virtualsquare@localhost
+$ ssh -p2222 -X user@localhost
 ```
 
 This example provides also a X-window forwarding service.
@@ -62,4 +62,3 @@ In case you update the disk image (e.g. using `brew_v2` again) ssh can complain 
 ```
 $  ssh-keygen -R "[localhost]:2222"
 ```
-

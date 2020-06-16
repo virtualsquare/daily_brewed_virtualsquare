@@ -85,6 +85,6 @@ virt-sysprep -a $PATHV2 \
 		--run-command 'ssh-keygen -A' \
 		--run-command "sed -i 's/^.*PasswordAuthentication.*$/#PasswordAuthentication yes/' /etc/ssh/sshd_config" \
 		--run-command "sed -i 's/^.*PermitRootLogin.*$/PermitRootLogin Yes/' /etc/ssh/sshd_config" \
-		--run-command 'adduser --disabled-password --gecos "" virtualsquare' \
-		--run-command 'echo "virtualsquare:virtualsquare" | chpasswd' \
-		--run-command 'cat /root/append_to.bashrc >> /home/virtualsquare/.bashrc'
+		--run-command 'adduser --disabled-password --gecos "" user' \
+		--run-command 'echo "user:virtualsquare" | chpasswd' \
+		--run-command 'cat /root/append_to.bashrc >> /home/user/.bashrc'
