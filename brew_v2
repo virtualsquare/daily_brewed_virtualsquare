@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-#    Copyright 2020 Renzo Davoli
+#    Copyright 2020-2021 Renzo Davoli
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@ BASEDIR=http://cdimage.debian.org/cdimage/cloud/sid/daily/
 
 # get the tag of the latest image
 LATESTTAG=$(wget -q -O - $BASEDIR | \
-			 grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | tail -1 | \
-			 sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e 's/\/$//' -e '/^$/ d')
+		grep -o '<a .*href=.*>' | grep -E '2[0-9]{7}-[0-9]{3}' | sed -e 's/<a /\n<a /g' | tail -1 | \
+		sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e 's/\/$//' -e '/^$/ d')
 
 IMAGETAG=debian-sid-nocloud-amd64-daily-
 V2TAG=debian-sid-v2-amd64-daily-
