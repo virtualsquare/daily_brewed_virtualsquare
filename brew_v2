@@ -82,6 +82,7 @@ virt-sysprep -a $PATHV2 \
 		--run-command 'echo "/root/install_packets_for_v2.sh && /root/install_v2_projects.sh" >> /root/get_v2all' \
 		--run-command 'chmod +x /root/get_v2all' \
 		--run-command 'cd /root; wget https://raw.githubusercontent.com/virtualsquare/virtualsquare.github.io/master/archive/install_scripts/append_to.bashrc' \
+		--run-command 'cd /etc/profile.d; wget https://raw.githubusercontent.com/virtualsquare/virtualsquare.github.io/master/archive/install_scripts/local_lib.sh' \
 		--run-command 'ssh-keygen -A' \
 		--run-command "sed -i 's/^.*PasswordAuthentication.*$/#PasswordAuthentication yes/' /etc/ssh/sshd_config" \
 		--run-command "sed -i 's/^.*PermitRootLogin.*$/PermitRootLogin Yes/' /etc/ssh/sshd_config" \
